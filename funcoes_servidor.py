@@ -48,12 +48,17 @@ def Broadcast(params):
         if sock != params['cliente']:
             sock.send(encapsular('TODOS', '', params['mensagem']))
 
+def Privado(params):
+    for sock,value in dicionario_clientes.items():
+        if value == params['cliente']:
+            sock.send(encapsular(params['cliente'], 'PRIVADO', params['mensagem']))
+
 def recebimento_dados_cliente(connectionSocket_cliente):
     nick = connectionSocket_cliente.recv(1024)
     tamanho, remetente, comando, nick = desencapsular(nick)
     #Verifica se o nick ja esta em uso 
     while(nick in dicionario_clientes.values()):
-        connectionSocket_cliente.send(encapsular('', '', ("Este nome ja esta em usao, tente novamente")))
+        connectionSocket_cliente.send(encapsular('', '', ("Este nome ja esta em uso, tente novamente")))
         nick = connectionSocket_cliente.recv(1024)
         tamanho, remetente, comando, nick = desencapsular(nick)
     connectionSocket_cliente.send(encapsular(nick, '', ("Bem vindo, "+nick)))
@@ -74,6 +79,19 @@ def recebimento_dados_cliente(connectionSocket_cliente):
         elif(comando.upper() =='SAIR'):
             sair(connectionSocket_cliente)
             break
+        elif(comando.upper() =='PRIVADO'):
+            dados = dados.split(',')
+            destinatario  = dados[0]
+            if destinatario != nick:
+                if destinatario in dicionario_clientes.values():
+                    mensagem_privado = dados[1]
+                    print(nick+" mandou uma mensagem em privado para "+destinatario)
+                    thread_privado = minhaThread(Privado,{'cliente':destinatario,'mensagem': nick+" mandou em privado: "+mensagem_privado})
+                    thread_privado.start()
+                else:
+                    connectionSocket_cliente.send(encapsular('', '', ("O destinatario nao existe")))
+            else:
+                connectionSocket_cliente.send(encapsular('', '', ("Vc nao pode mandar em privado para si mesmo")))
         elif remetente == 'TODOS':
             #thread de broadcast para enviar mensagem para todos os clientes exceto o remetente
             thread_broadcast = minhaThread(Broadcast,{'cliente':connectionSocket_cliente,'mensagem': nick+" escreveu: "+dados})

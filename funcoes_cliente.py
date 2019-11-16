@@ -37,9 +37,8 @@ def receber():
         tamanho, remetente, comando, dados = desencapsular(mensagem_recebida)
         if comando == 'SAIR':
             mensagem_envio = encapsular('SERVIDOR', 'SAIR', '')
+            print(dados)
             clientSocket.send(mensagem_envio)
             clientSocket.close()
             break
-        elif comando == 'PRIVADO':
-            remetente == 'SERVIDOR'
         print(dados)
