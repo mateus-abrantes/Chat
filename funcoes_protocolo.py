@@ -1,4 +1,9 @@
 def encapsular(remetente, comando, dados):
+    #limita o tamanho da mensagem em 73 caracteres para o cabecalho ter 2 bytes ate 99 bytes no frame
+    if (len(dados) <= 73 ):
+        dados = dados
+    else:
+        dados = dados[:74]
     tamanho = 2+16+8+len(dados)
     #ajustando o tamnho maximo do remetente
     if len(remetente)<16:
