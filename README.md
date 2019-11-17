@@ -1,10 +1,8 @@
 # Chat
 Chat utilizando Sockets e Threads
-<!-- blank line -->
-![](media/poster_image.png)
+![](midia/poster_image.png)
 <figure class="video_container">
-  <video controls="true" allowfullscreen="true" poster="media/poster_image.png">
-    <source src="media/video.mp4" type="video/mp4">
+  <video controls="true" allowfullscreen="true" poster="midia/poster_image.png">
+    <source src="midia/video.mp4" type="video/mp4">
   </video>
 </figure>
-<!-- blank line -->
