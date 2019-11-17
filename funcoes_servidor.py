@@ -74,12 +74,12 @@ def recebimento_dados_cliente(connectionSocket_cliente):
     while 1:
         mensagem = connectionSocket_cliente.recv(1024)
         tamanho, remetente, comando, dados = desencapsular(mensagem)
-        if(comando.upper() == 'LISTA'):
+        if(comando == 'LISTA'):
             listar_clientes(connectionSocket_cliente)
-        elif(comando.upper() =='SAIR'):
+        elif(comando =='SAIR'):
             sair(connectionSocket_cliente)
             break
-        elif(comando.upper() =='PRIVADO'):
+        elif(comando =='PRIVADO'):
             dados = dados.split(',')
             destinatario  = dados[0]
             if destinatario != nick:
